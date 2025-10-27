@@ -1,6 +1,5 @@
 package com.example.demo.entities;
 
-import com.jdc.web.enums.EstadoIncidente;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,19 +21,18 @@ public class SeguimientoIncidenteEntity implements Serializable {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_incidente", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_seguimiento_incidente"))
+    @JoinColumn(name = "id_incidente", nullable = false, foreignKey = @ForeignKey(name = "fk_seguimiento_incidente"))
     private IncidenteEntity incidente;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "estado_anterior", length = 20)
-    private EstadoIncidente estadoAnterior;
+    @Column(name = "estado_anterior", nullable = false, length = 20,
+            columnDefinition = "VARCHAR(20) CHECK (estado_anterior IN ('abierto', 'en progreso', 'en espera', 'cerrado'))")
+    private String estadoAnterior;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "estado_actual", nullable = false, length = 20)
-    private EstadoIncidente estadoActual;
+    @Column(name = "estado_actual", nullable = false, length = 20,
+            columnDefinition = "VARCHAR(20) CHECK (estado_actual IN ('abierto', 'en progreso', 'en espera', 'cerrado'))")
+    private String estadoActual;
 
-    @Size(max = 255, message = "Los comentarios no deben exceder 255 caracteres")
+    @Size(max = 255, message = "Los comentarios no pueden exceder 255 caracteres")
     @Column(name = "comentarios", length = 255)
     private String comentarios;
 
@@ -46,8 +44,8 @@ public class SeguimientoIncidenteEntity implements Serializable {
     public SeguimientoIncidenteEntity() {
     }
 
-    public SeguimientoIncidenteEntity(IncidenteEntity incidente, EstadoIncidente estadoAnterior,
-                                      EstadoIncidente estadoActual, String comentarios) {
+    public SeguimientoIncidenteEntity(IncidenteEntity incidente, String estadoAnterior,
+                                      String estadoActual, String comentarios) {
         this.incidente = incidente;
         this.estadoAnterior = estadoAnterior;
         this.estadoActual = estadoActual;
@@ -71,19 +69,19 @@ public class SeguimientoIncidenteEntity implements Serializable {
         this.incidente = incidente;
     }
 
-    public EstadoIncidente getEstadoAnterior() {
+    public String getEstadoAnterior() {
         return estadoAnterior;
     }
 
-    public void setEstadoAnterior(EstadoIncidente estadoAnterior) {
+    public void setEstadoAnterior(String estadoAnterior) {
         this.estadoAnterior = estadoAnterior;
     }
 
-    public EstadoIncidente getEstadoActual() {
+    public String getEstadoActual() {
         return estadoActual;
     }
 
-    public void setEstadoActual(EstadoIncidente estadoActual) {
+    public void setEstadoActual(String estadoActual) {
         this.estadoActual = estadoActual;
     }
 
@@ -107,8 +105,9 @@ public class SeguimientoIncidenteEntity implements Serializable {
     public String toString() {
         return "SeguimientoIncidenteEntity{" +
                 "id=" + id +
-                ", estadoAnterior=" + estadoAnterior +
-                ", estadoActual=" + estadoActual +
+                ", idIncidente=" + (incidente != null ? incidente.getIdIncidente() : null) +
+                ", estadoAnterior='" + estadoAnterior + '\'' +
+                ", estadoActual='" + estadoActual + '\'' +
                 ", comentarios='" + comentarios + '\'' +
                 ", fechaModificacion=" + fechaModificacion +
                 '}';

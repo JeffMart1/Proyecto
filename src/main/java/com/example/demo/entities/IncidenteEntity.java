@@ -1,9 +1,5 @@
 package com.example.demo.entities;
 
-import com.jdc.web.enums.TipoIncidente;
-import com.jdc.web.enums.EstadoIncidente;
-import com.jdc.web.enums.PrioridadIncidente;
-import com.jdc.web.enums.TecnicoAsignado;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -27,29 +23,29 @@ public class IncidenteEntity implements Serializable {
     private Integer idIncidente;
 
     @NotNull(message = "El tipo de incidente es obligatorio")
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false, length = 20)
-    private TipoIncidente tipo;
+    @Column(name = "tipo", nullable = false, length = 20,
+            columnDefinition = "VARCHAR(20) CHECK (tipo IN ('hardware', 'software', 'red', 'accesos'))")
+    private String tipo;
 
     @NotNull(message = "La descripción es obligatoria")
     @Size(min = 1, max = 255, message = "La descripción debe tener entre 1 y 255 caracteres")
     @Column(name = "descripcion", nullable = false, length = 255)
     private String descripcion;
 
-    @NotNull(message = "El estado es obligatorio")
-    @Enumerated(EnumType.STRING)
-    @Column(name = "estado", nullable = false, length = 20)
-    private EstadoIncidente estado;
-
     @NotNull(message = "La prioridad es obligatoria")
-    @Enumerated(EnumType.STRING)
-    @Column(name = "prioridad", nullable = false, length = 20)
-    private PrioridadIncidente prioridad;
+    @Column(name = "prioridad", nullable = false, length = 20,
+            columnDefinition = "VARCHAR(20) CHECK (prioridad IN ('alta', 'media', 'baja'))")
+    private String prioridad;
+
+    @NotNull(message = "El estado es obligatorio")
+    @Column(name = "estado", nullable = false, length = 20,
+            columnDefinition = "VARCHAR(20) CHECK (estado IN ('abierto', 'en progreso', 'en espera', 'cerrado'))")
+    private String estado;
 
     @NotNull(message = "El técnico asignado es obligatorio")
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tecnico", nullable = false, length = 20)
-    private TecnicoAsignado tecnico;
+    @Column(name = "tecnico", nullable = false, length = 20,
+            columnDefinition = "VARCHAR(20) CHECK (tecnico IN ('pedro', 'felipe', 'juan', 'peter', 'rafael'))")
+    private String tecnico;
 
     @CreationTimestamp
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
@@ -59,20 +55,20 @@ public class IncidenteEntity implements Serializable {
     @OneToMany(mappedBy = "incidente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SeguimientoIncidenteEntity> seguimientos;
 
-    // Relación One-to-Many con TareaAsignadaEntity
+    // Relación One-to-Many con ConsultaEntity
     @OneToMany(mappedBy = "incidente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TareaAsignadaEntity> tareas;
+    private List<ConsultaEntity> consultas;
 
     // Constructores
     public IncidenteEntity() {
     }
 
-    public IncidenteEntity(TipoIncidente tipo, String descripcion, EstadoIncidente estado,
-                           PrioridadIncidente prioridad, TecnicoAsignado tecnico) {
+    public IncidenteEntity(String tipo, String descripcion, String prioridad,
+                           String estado, String tecnico) {
         this.tipo = tipo;
         this.descripcion = descripcion;
-        this.estado = estado;
         this.prioridad = prioridad;
+        this.estado = estado;
         this.tecnico = tecnico;
     }
 
@@ -85,11 +81,11 @@ public class IncidenteEntity implements Serializable {
         this.idIncidente = idIncidente;
     }
 
-    public TipoIncidente getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(TipoIncidente tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
@@ -101,27 +97,27 @@ public class IncidenteEntity implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public EstadoIncidente getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoIncidente estado) {
-        this.estado = estado;
-    }
-
-    public PrioridadIncidente getPrioridad() {
+    public String getPrioridad() {
         return prioridad;
     }
 
-    public void setPrioridad(PrioridadIncidente prioridad) {
+    public void setPrioridad(String prioridad) {
         this.prioridad = prioridad;
     }
 
-    public TecnicoAsignado getTecnico() {
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getTecnico() {
         return tecnico;
     }
 
-    public void setTecnico(TecnicoAsignado tecnico) {
+    public void setTecnico(String tecnico) {
         this.tecnico = tecnico;
     }
 
@@ -141,23 +137,23 @@ public class IncidenteEntity implements Serializable {
         this.seguimientos = seguimientos;
     }
 
-    public List<TareaAsignadaEntity> getTareas() {
-        return tareas;
+    public List<ConsultaEntity> getConsultas() {
+        return consultas;
     }
 
-    public void setTareas(List<TareaAsignadaEntity> tareas) {
-        this.tareas = tareas;
+    public void setConsultas(List<ConsultaEntity> consultas) {
+        this.consultas = consultas;
     }
 
     @Override
     public String toString() {
         return "IncidenteEntity{" +
                 "idIncidente=" + idIncidente +
-                ", tipo=" + tipo +
+                ", tipo='" + tipo + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", estado=" + estado +
-                ", prioridad=" + prioridad +
-                ", tecnico=" + tecnico +
+                ", prioridad='" + prioridad + '\'' +
+                ", estado='" + estado + '\'' +
+                ", tecnico='" + tecnico + '\'' +
                 ", fechaCreacion=" + fechaCreacion +
                 '}';
     }
