@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://thymeleaf.org">
+<head th:replace="layout/layout :: head "></head>
+<body>
+<nav th:replace="layout/layout :: navbar "></nav>
+
+<div class ="page-content" style="text-align: center;">
+
+    <h1> MESA DE SERVICIOS</h1>
+    <p>"Aprendiendo a construir el software del futuro, paso a paso."</p>
+
+    <img th:src="@{/images/ing.jpg}" alt="images Ing" style="width: 50%; border-radius: 20px; box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4) ">
+</div>
+<footer th:replace="layout/layout :: footer"></footer>
+<div th:replace="~{layout/layout ::scripts}"></div>
+</body>
+</html>

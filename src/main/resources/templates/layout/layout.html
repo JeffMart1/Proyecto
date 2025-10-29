@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+    <title>Mesa de Ayuda IT</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de Gestión de Incidentes Técnicos">
+    <meta name="author" content="Jeffer Martínez">
+    <meta name="keywords" content="SPRING, JAVA, MVC, IT, HELPDESK">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark" th:fragment="navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/ListarIncidentes}">
+            <i class="bi bi-bug-fill"></i> Mesa de Ayuda IT
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav me-auto">
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-gear-fill"></i> Gestión De Incidentes
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- Crear Incidente - Todos los roles -->
+                        <li sec:authorize="isAuthenticated()">
+                            <a class="dropdown-item" th:href="@{/CrearIncidente}">
+                                <i class="bi bi-plus-circle-fill"></i> Crear incidente
+                            </a>
+                        </li>
+
+                        <!-- Lista de Incidentes - Todos los roles -->
+                        <li sec:authorize="isAuthenticated()">
+                            <a class="dropdown-item" th:href="@{/ListarIncidentes}">
+                                <i class="bi bi-list-check"></i> Lista De Incidentes
+                            </a>
+                        </li>
+
+                        <!-- Asignar Técnicos - Solo ADMIN -->
+                        <li sec:authorize="hasRole('ADMIN')">
+                            <a class="dropdown-item" th:href="@{/AsignarTecnico}">
+                                <i class="bi bi-person-fill-gear"></i> Asignar Técnicos
+                            </a>
+                        </li>
+
+                        <!-- Gestionar Estado - Solo ADMIN y TECNICO -->
+                        <li sec:authorize="hasAnyRole('ADMIN', 'TECNICO')">
+                            <a class="dropdown-item" th:href="@{/GestionarEstado}">
+                                <i class="bi bi-arrow-repeat"></i> Cambiar Estado
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">
+                        <i class="bi bi-chat-dots-fill"></i> Seguimiento Y Comentarios
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                </li>
+            </ul>
+
+            <!-- INFORMACIÓN DEL USUARIO - Lado derecho -->
+            <ul class="navbar-nav ms-auto" sec:authorize="isAuthenticated()">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle"></i>
+                        <span sec:authentication="name">Usuario</span>
+                        <span class="badge bg-light text-dark ms-1" sec:authentication="principal.authorities"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <span class="dropdown-item-text">
+                                <strong>Usuario:</strong> <span sec:authentication="name"></span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dropdown-item-text">
+                                <strong>Rol:</strong>
+                                <span class="badge bg-info" sec:authentication="principal.authorities"></span>
+                            </span>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<body>
+<footer th:fragment="footer" class="bg-light text-center py-3 mt-5">
+    <p class="mb-0"> &copy; 2025 Jeffer M - Mesa de Ayuda IT</p>
+</footer>
+
+<div th:fragment="scripts">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</div>
+
+</body>
+</html>dentes/crear}">
+<i class="bi bi-plus-circle"></i> Crear Incidente
+</a>
+</li>
+<li>

@@ -37,13 +37,11 @@ public class IncidenteEntity implements Serializable {
             columnDefinition = "VARCHAR(20) CHECK (prioridad IN ('alta', 'media', 'baja'))")
     private String prioridad;
 
-    @NotNull(message = "El estado es obligatorio")
-    @Column(name = "estado", nullable = false, length = 20,
+    @Column(name = "estado", nullable = true, length = 20,
             columnDefinition = "VARCHAR(20) CHECK (estado IN ('abierto', 'en progreso', 'en espera', 'cerrado'))")
     private String estado;
 
-    @NotNull(message = "El técnico asignado es obligatorio")
-    @Column(name = "tecnico", nullable = false, length = 20,
+    @Column(name = "tecnico", nullable = true, length = 20,
             columnDefinition = "VARCHAR(20) CHECK (tecnico IN ('pedro', 'felipe', 'juan', 'peter', 'rafael'))")
     private String tecnico;
 

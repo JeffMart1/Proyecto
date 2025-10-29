@@ -1,0 +1,13 @@
+com\example\demo\config\ConfigSecurity.class
+com\example\demo\service\IncidenteServiceImpl.class
+com\example\demo\service\LoginService.class
+com\example\demo\repository\IncidenteRepository.class
+com\example\demo\Demo1Application.class
+com\example\demo\repository\SeguimientoIncidenteRepository.class
+com\example\demo\service\LoginServiceImpl.class
+com\example\demo\controller\IncidenteController.class
+com\example\demo\entities\ConsultaEntity.class
+com\example\demo\entities\SeguimientoIncidenteEntity.class
+com\example\demo\controller\LoginController.class
+com\example\demo\entities\IncidenteEntity.class
+com\example\demo\service\IncidenteService.class

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="~{layout/layout :: head}"></head>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<header th:replace="~{layout/layout :: navbar}"></header>
+
+<div class="container" style="margin-top: 10px; padding: 5px; width: 80%">
+    <h1 class="page-content" th:text="${titulo}"></h1>
+
+    <form th:object="${objIncidente}" th:action="@{/crear}" method="post">
+
+        <legend>FORMULARIO</legend>
+
+        <!-- Descripción -->
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{descripcion}"
+                   th:errorclass="is-invalid"
+                   aria-describedby="descripcionHelp">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('descripcion')}"
+                 th:errors="*{descripcion}"></div>
+        </div>
+
+        <!-- Prioridad -->
+        <div class="mb-3">
+            <label class="form-label">Prioridad</label>
+            <select class="form-select"
+                    th:field="*{prioridad}"
+                    th:errorclass="is-invalid">
+                <option value="">Seleccione La Prioridad Del Incidente</option>
+                <option value="alta">Alta</option>
+                <option value="media">Media</option>
+                <option value="baja">Baja</option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('prioridad')}"
+                 th:errors="*{prioridad}"></div>
+        </div>
+
+        <!-- Tipo -->
+        <div class="mb-3">
+            <label class="form-label">Tipo</label>
+            <select class="form-select"
+                    th:field="*{tipo}"
+                    th:errorclass="is-invalid">
+                <option value="">Seleccione El Tipo Del Incidente</option>
+                <option value="hardware">Hardware</option>
+                <option value="software">Software</option>
+                <option value="red">Red</option>
+                <option value="accesos">Accesos</option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('tipo')}"
+                 th:errors="*{tipo}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Registrar</button>
+        <a th:href="@{/ListarIncidentes}" class="btn btn-danger">Cancelar</a>
+    </form>
+
+</div>
+
+<footer th:replace="~{layout/layout :: footer}"></footer>
+
+<!-- ✅ ESTO ES LO QUE FALTABA -->
+<div th:replace="~{layout/layout :: scripts}"></div>
+
+</body>
+</html>
